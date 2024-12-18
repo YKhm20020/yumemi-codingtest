@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check": "biome check --write --diagnostic-level=error *",
+    "check:ci": "biome ci --verbose --diagnostic-level=error *"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.0-beta.8",
