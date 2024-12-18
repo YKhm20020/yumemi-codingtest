@@ -23,6 +23,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "postcss": "^8"
+    "postcss": "^8",
+    "vitest": "^2.1.8"
   }
 }
