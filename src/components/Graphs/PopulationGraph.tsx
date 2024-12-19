@@ -1,7 +1,7 @@
+import { fetchPerYearPopulation } from '@/app/utils/Population/fetchPerYearPopulation';
+import type { PopulationDataPoint } from '@/types/population';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import type { PopulationDataPoint } from '@/types/population';
-import { fetchPerYearPopulation } from '@/app/utils/Population/fetchPerYearPopulation';
 
 type PopulationChartProps = {
     prefCode: string;
@@ -32,13 +32,13 @@ export async function PopulationChart({ prefCode }: PopulationChartProps) {
                     text: '人口数',
                 },
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         return Highcharts.numberFormat(Number(this.value), 0, '', ',');
                     },
                 },
             },
             tooltip: {
-                formatter: function() {
+                formatter: function () {
                     return `${this.series.name}<br/>${this.x}年: ${Highcharts.numberFormat(Number(this.y) || 0, 0, '', ',')}人`;
                 },
             },

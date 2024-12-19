@@ -3,16 +3,13 @@ export const fetchPerYearPopulation = async () => {
     const apiKey = process.env.RESAS_API_KEY || '';
 
     try {
-        const response = await fetch(
-            `${url}/api/v1/population/composition/perYear?prefCode=1`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': apiKey,
-                },
+        const response = await fetch(`${url}/api/v1/population/composition/perYear?prefCode=1`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': apiKey,
             },
-        );
+        });
 
         const json = await response.json();
         // ここのデータはちゃんと来てそう

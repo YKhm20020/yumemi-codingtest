@@ -1,4 +1,4 @@
-import { PopulationChart } from "@/components/Graphs/PopulationGraph";
+import { PopulationChart } from '@/components/Graphs/PopulationGraph';
 
 export default function Home() {
     return <PopulationChart prefCode='1' />;
