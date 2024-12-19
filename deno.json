@@ -1,3 +1,7 @@
 {
     "unstable": ["unsafe-proto"],
+    "tasks": {
+        "check": "deno run npm:@biomejs/biome check --write --diagnostic-level=error *",
+        "check:ci": "deno run npm:@biomejs/biome ci --verbose --diagnostic-level=error *"
+    }
 }
