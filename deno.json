@@ -5,6 +5,9 @@
     },
     "unstable": ["unsafe-proto"],
     "tasks": {
+        "dev": "deno run -A npm:next dev",
+        "build": "deno run -A npm:next build",
+        "start": "deno run -A npm:next start",
         "check": "deno run npm:@biomejs/biome check --write --diagnostic-level=error *",
         "check:ci": "deno run npm:@biomejs/biome ci --verbose --diagnostic-level=error *"
     }
