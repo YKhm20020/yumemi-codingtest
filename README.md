@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ゆめみさんコーディングテスト
 
-## Getting Started
+本リポジトリは、ゆめみさんのフロントエンドコーディングテストの回答リポジトリです。
+README には、以下のことを記載しています。
 
-First, run the development server:
+- 環境構築
+- 開発時間
+- 使用技術
+
+## 環境構築
+
+以下のコマンドを実行して、環境を構築できます。
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/YKhm20020/yumemi-codingtest.git
+cd yumemi-codingtest
+deno install
+deno run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 開発時間
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| 日付       | 作業内容                                | 時間                   |
+| ---------- | --------------------------------------- | ---------------------- |
+| 2024/12/18 | 環境構築（Next.js, Biome, TailwindCSS） | 1.5 時間 (17:00~18:30) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1 日目、開発時間の詳細
 
-## Learn More
+環境構築メイン。[ticket-1](https://github.com/YKhm20020/yumemi-codingtest/pull/2) に詳細は記載。
+時間が短いが、研究室サーバーが動かなくなったと報告があったので、その対応にあたるため、1.5 時間で作業終了。
 
-To learn more about Next.js, take a look at the following resources:
+## 使用技術
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### フレームワーク
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js 15.1.1
+- React 19.0.0
 
-## Deploy on Vercel
+### CSS ライブラリ
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- TailwindCSS 4.0.0-beta.8
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 開発ツール
+
+- Biome（リンター・フォーマッター）
+- Vitest（テストフレームワーク）
+
+### CI/CD
+
+- GitHub Actions
+  - Biome によるコード品質チェック
+
+TODO として、Vercel でのデプロイも行う。
