@@ -1,4 +1,8 @@
 {
+    "imports": {
+        "highcharts": "npm:highcharts",
+        "highcharts-react-official": "npm:highcharts-react-official"
+    },
     "unstable": ["unsafe-proto"],
     "tasks": {
         "check": "deno run npm:@biomejs/biome check --write --diagnostic-level=error *",

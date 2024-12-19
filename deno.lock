@@ -874,6 +874,10 @@
     }
   },
   "workspace": {
+    "dependencies": [
+      "npm:highcharts-react-official@*",
+      "npm:highcharts@*"
+    ],
     "packageJson": {
       "dependencies": [
         "npm:@biomejs/biome@^1.9.4",
