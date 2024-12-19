@@ -1,8 +1,17 @@
 {
     "imports": {
+        "@tailwindcss/postcss": "npm:@tailwindcss/postcss@^4.0.0-beta.8",
+        "@types/node": "npm:@types/node@^22.10.2",
+        "@types/react": "npm:@types/react@^19.0.2",
         "highcharts": "npm:highcharts",
-        "highcharts-react-official": "npm:highcharts-react-official"
+        "highcharts-react-official": "npm:highcharts-react-official",
+        "next": "npm:next@^15.1.1",
+        "react": "npm:react@^19.0.0",
+        "react-dom": "npm:react-dom@^19.0.0",
+        "tailwindcss": "npm:tailwindcss@^4.0.0-beta.8",
+        "typescript": "npm:typescript@^5.7.2"
     },
+    "nodeModulesDir": "auto",
     "unstable": ["unsafe-proto"],
     "tasks": {
         "dev": "deno run -A npm:next dev",
