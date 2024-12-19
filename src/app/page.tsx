@@ -1,3 +1,5 @@
+import { PopulationChart } from "@/components/Graphs/PopulationGraph";
+
 export default function Home() {
-    return <p className='text-blue-500'>Hello World</p>;
+    return <PopulationChart prefCode='1' />;
 }
