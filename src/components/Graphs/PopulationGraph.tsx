@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchPerYearPopulation } from '@/app/utils/Population/fetchPerYearPopulation';
+import { fetchPerYearPopulation } from '@/utils/population/fetchPerYearPopulation';
 import type { PopulationDataPoint } from '@/types/population';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
