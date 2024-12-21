@@ -1,15 +1,18 @@
-export async function fetchPerYearPopulation (prefCode: string) {
+export async function fetchPerYearPopulation(prefCode: string) {
     const url = process.env.NEXT_PUBLIC_RESAS_API_URL || '';
     const apiKey = process.env.NEXT_PUBLIC_RESAS_API_KEY || '';
 
     try {
-        const response = await fetch(`${url}/api/v1/population/composition/perYear?prefCode=${prefCode}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': apiKey,
+        const response = await fetch(
+            `${url}/api/v1/population/composition/perYear?prefCode=${prefCode}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey,
+                },
             },
-        });
+        );
 
         const json = await response.json();
 
@@ -21,4 +24,4 @@ export async function fetchPerYearPopulation (prefCode: string) {
     } catch (error) {
         throw new Error(error?.toString() || 'Population データの取得に失敗しました');
     }
-};
+}
