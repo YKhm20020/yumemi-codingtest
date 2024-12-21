@@ -7,10 +7,11 @@ import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useState } from 'react';
 
 type PopulationChartProps = {
-    prefCode: string;
+    prefCode: string; // 都道府県コード
+    dataType: number; // 0: 総人口, 1: 年少人口, 2: 生産年齢人口, 3: 老年人口
 };
 
-export const PopulationChart = ({ prefCode }: PopulationChartProps) => {
+export const PopulationChart = ({ prefCode, dataType }: PopulationChartProps) => {
     const [chartOptions, setChartOptions] = useState<Highcharts.Options | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -23,11 +24,12 @@ export const PopulationChart = ({ prefCode }: PopulationChartProps) => {
                     throw new Error('人口データの取得に失敗しました');
                 }
 
-                const totalPopulation = data.result.data[0].data;
+                const populationData = data.result.data[0].data;
 
                 const options: Highcharts.Options = {
                     title: {
-                        text: '都道府県別総人口推移',
+                        // TODO: 都道府県名を取得して 「都道府県別」 と差し替え
+                        text: `都道府県別${data.result.data[dataType].label}推移`,
                     },
                     xAxis: {
                         title: {
@@ -53,8 +55,8 @@ export const PopulationChart = ({ prefCode }: PopulationChartProps) => {
                     series: [
                         {
                             type: 'line',
-                            name: '総人口',
-                            data: totalPopulation.map((point: PopulationDataPoint) => [
+                            name: data.result.data[dataType].label,
+                            data: populationData.map((point: PopulationDataPoint) => [
                                 point.year,
                                 point.value,
                             ]),
@@ -72,7 +74,7 @@ export const PopulationChart = ({ prefCode }: PopulationChartProps) => {
         };
 
         fetchData();
-    }, [prefCode]);
+    }, [prefCode, dataType]);
 
     if (error) {
         return <div>{error}</div>;
