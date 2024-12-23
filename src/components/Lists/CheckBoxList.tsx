@@ -1,13 +1,13 @@
 'use client';
 
-import type { PrefectureResponse } from '@/types/population';
+import type { PrefectureData } from '@/types/population';
 import { fetchPrefectures } from '@/utils/population/fetchPrefectures';
 import { useEffect, useState } from 'react';
 import { CheckBox } from '../CheckBoxes/CheckBox';
 
 export const CheckBoxList = () => {
     const [selectedPrefectureCodes, setSelectedPrefectureCodes] = useState<Set<number>>(new Set());
-    const [prefectures, setPrefectures] = useState<PrefectureResponse[]>([]);
+    const [prefectures, setPrefectures] = useState<PrefectureData[]>([]);
 
     // prefCode と 都道府県名のデータを取得
     // TODO: CheckBoxList と PopulationGraph をまとめたコンポーネントで改めて実装
