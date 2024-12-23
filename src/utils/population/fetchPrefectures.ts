@@ -1,4 +1,6 @@
-export async function fetchPrefectures() {
+import type { PrefectureResponse } from '@/types/population';
+
+export async function fetchPrefectures(): Promise<PrefectureResponse> {
     const url = process.env.NEXT_PUBLIC_RESAS_API_URL || '';
     const apiKey = process.env.NEXT_PUBLIC_RESAS_API_KEY || '';
 
