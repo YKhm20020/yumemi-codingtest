@@ -1,24 +1,24 @@
 // 都道府県一覧に関するデータの返り値の型
 export type PrefectureResponse = {
-    prefCode: number;
-    prefName: string;
+    prefCode: number; // 都道府県ごとに一意なID
+    prefName: string; // 都道府県名
 };
 
 // グラフの点が保持しているデータの型
 export type PopulationDataPoint = {
-    year: number;
-    value: number;
-    rate: number;
+    year: number; // 年
+    value: number; // 人口
+    rate: number; // 人口の変化率
 };
 
 // 地域単位、年単位の年齢構成に関するデータの返り値の型
 export type PopulationResponse = {
-    message: string | null;
+    message: string | null; // メッセージ
     result: {
-        boundaryYear: number;
+        boundaryYear: number; // 境界年
         data: {
-            label: string;
-            data: PopulationDataPoint[];
+            label: string; // ラベル
+            data: PopulationDataPoint[]; // 人口データ
         }[];
     };
 };
