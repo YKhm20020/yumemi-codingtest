@@ -1,16 +1,19 @@
-'use client';
-
 import type React from 'react';
-import { useState } from 'react';
 
 type CheckBoxProps = {
-    label: string; // ラベル、都道府県名を表示
+    id: number; // prefCode, 都道府県ごとに一意
+    label: string; // ラベル
+    checked: boolean; // チェック状態 (true: チェック済み, false: 未チェック)
+    onChange: (checked: boolean) => void; // チェックの状態を変更する関数
 };
 
-export const CheckBox: React.FC<CheckBoxProps> = ({ label }) => {
-    const [checked, setChecked] = useState<boolean>(false);
-
-    const inputId = `checkbox-${label}`;
+export const CheckBox: React.FC<CheckBoxProps> = ({
+    id,
+    label,
+    checked,
+    onChange,
+}: CheckBoxProps) => {
+    const inputId = `checkbox-${id}`;
 
     return (
         <div className='flex items-center'>
@@ -18,7 +21,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({ label }) => {
                 type='checkbox'
                 id={inputId}
                 checked={checked}
-                onChange={() => setChecked(!checked)}
+                onChange={(e) => onChange(e.target.checked)}
             />
             <label htmlFor={inputId} className='ml-2'>
                 {label}
