@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import { CheckBox } from '../CheckBoxes/CheckBox';
 
 export const CheckBoxList = () => {
+    // TODO: 変数名が都道府県関連に依存しているので、汎用的なコンポーネントにするため、チェックボックスリストとグラフをまとめたコンポーネント実装時に変数名を変更。
+    // チェックボックスリスト作成時点では詳細な設計が思いつかなかったため、都道府県に関連した変数名をそのまま使用している。
+
     const [selectedPrefectureCodes, setSelectedPrefectureCodes] = useState<Set<number>>(new Set());
     const [prefectures, setPrefectures] = useState<PrefectureData[]>([]);
 
