@@ -7,29 +7,39 @@ import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useState } from 'react';
 
 type PopulationChartProps = {
-    prefCode: string; // 都道府県コード
-    dataType: number; // 0: 総人口, 1: 年少人口, 2: 生産年齢人口, 3: 老年人口
+    prefCodes: string[]; // 人口データのグラフを表示する都道府県コードの配列
+    dataType: number; // 表示する人口データの種類 (0: 総人口, 1: 年少人口, 2: 生産年齢人口, 3: 老年人口)
 };
 
-export const PopulationChart = ({ prefCode, dataType }: PopulationChartProps) => {
+export const PopulationChart = ({ prefCodes, dataType }: PopulationChartProps) => {
     const [chartOptions, setChartOptions] = useState<Highcharts.Options | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchPerYearPopulation(prefCode);
+                const seriesData = await Promise.all(
+                    prefCodes.map(async (prefCode) => {
+                        const data = await fetchPerYearPopulation(prefCode);
+                        return {
+                            type: 'line' as const,
+                            name: data.result.data[dataType].label,
+                            data: data.result.data[dataType].data.map(
+                                (point: PopulationDataPoint) => [point.year, point.value],
+                            ),
+                        };
+                    }),
+                );
+                console.log(seriesData);
 
-                if (!data.result?.data) {
+                if (!seriesData) {
                     throw new Error('人口データの取得に失敗しました');
                 }
-
-                const populationData = data.result.data[0].data;
 
                 const options: Highcharts.Options = {
                     title: {
                         // TODO: 都道府県名を取得して 「都道府県別」 と差し替え
-                        text: `都道府県別${data.result.data[dataType].label}推移`,
+                        text: `都道府県別${seriesData[0].name}推移`,
                     },
                     xAxis: {
                         title: {
@@ -52,16 +62,7 @@ export const PopulationChart = ({ prefCode, dataType }: PopulationChartProps) =>
                             return `${this.series.name}<br/>${this.x}年: ${Highcharts.numberFormat(Number(this.y) || 0, 0, '', ',')}人`;
                         },
                     },
-                    series: [
-                        {
-                            type: 'line',
-                            name: data.result.data[dataType].label,
-                            data: populationData.map((point: PopulationDataPoint) => [
-                                point.year,
-                                point.value,
-                            ]),
-                        },
-                    ],
+                    series: seriesData,
                     credits: {
                         enabled: false,
                     },
@@ -74,7 +75,7 @@ export const PopulationChart = ({ prefCode, dataType }: PopulationChartProps) =>
         };
 
         fetchData();
-    }, [prefCode, dataType]);
+    }, [prefCodes, dataType]);
 
     if (error) {
         return <div>{error}</div>;
