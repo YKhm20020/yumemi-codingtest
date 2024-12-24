@@ -1,5 +1,5 @@
-import { PopulationChart } from '@/components/Graphs/PopulationGraph';
-import { CheckBoxList } from '@/components/Lists/CheckBoxList';
+import { PopulationChart } from '@/components/Graph/PopulationGraph';
+import { CheckBoxList } from '@/components/List/CheckBoxList';
 
 export default function Home() {
     return (
