@@ -1,6 +1,6 @@
 'use client';
 
-import { PopulationChart } from '@/components/Graph/PopulationGraph';
+import { PopulationGraph } from '@/components/Graph/PopulationGraph';
 import { CheckBoxList } from '@/components/List/CheckBoxList';
 import type { PrefectureData } from '@/types/population';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ export const PopulationDashboard = () => {
     return (
         <div>
             <CheckBoxList onChange={handlePrefectureChange} />
-            <PopulationChart prefectureData={selectedPrefectures} dataType={1} />
+            <PopulationGraph prefectureData={selectedPrefectures} dataType={1} />
         </div>
     );
 };

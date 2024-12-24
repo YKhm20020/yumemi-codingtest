@@ -6,12 +6,12 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useState } from 'react';
 
-type PopulationChartProps = {
+type PopulationGraphProps = {
     prefectureData: PrefectureData[]; // 選択された都道府県データ、prefCode と 都道府県名の組の配列
     dataType: number; // 表示する人口データの種類 (0: 総人口, 1: 年少人口, 2: 生産年齢人口, 3: 老年人口)
 };
 
-export const PopulationChart = ({ prefectureData, dataType }: PopulationChartProps) => {
+export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphProps) => {
     const [chartOptions, setChartOptions] = useState<Highcharts.Options>({
         title: {
             text: '都道府県別人口推移のグラフ',
