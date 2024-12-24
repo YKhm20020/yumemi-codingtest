@@ -1,9 +1,9 @@
 'use client';
 
+import { CommonCheckBox } from '@/components/CheckBox/CommonCheckBox';
 import type { PrefectureData } from '@/types/population';
 import { fetchPrefectures } from '@/utils/population/fetchPrefectures';
 import { useEffect, useState } from 'react';
-import { CheckBox } from '../CheckBoxes/CheckBox';
 
 export const CheckBoxList = () => {
     // TODO: 変数名が都道府県関連に依存しているので、汎用的なコンポーネントにするため、チェックボックスリストとグラフをまとめたコンポーネント実装時に変数名を変更。
@@ -48,7 +48,7 @@ export const CheckBoxList = () => {
     return (
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4'>
             {prefectures.map((prefecture) => (
-                <CheckBox
+                <CommonCheckBox
                     key={prefecture.prefCode}
                     id={prefecture.prefCode}
                     label={prefecture.prefName}
