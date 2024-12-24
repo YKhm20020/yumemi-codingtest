@@ -5,7 +5,7 @@ type CommonCheckBoxProps = {
     id: number; // prefCode, 都道府県ごとに一意
     label: string; // ラベル
     checked: boolean; // チェック状態 (true: チェック済み, false: 未チェック)
-    onChange: (checked: boolean) => void; // チェックの状態を変更する関数
+    onChange: (checked: boolean) => void; // チェック状態を更新する関数
 };
 
 export const CommonCheckBox: React.FC<CommonCheckBoxProps> = ({

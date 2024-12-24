@@ -5,7 +5,11 @@ import type { PrefectureData } from '@/types/population';
 import { fetchPrefectures } from '@/utils/population/fetchPrefectures';
 import { useEffect, useState } from 'react';
 
-export const CheckBoxList = () => {
+type CheckBoxListProps = {
+    onChange: (selectedPrefCodes: string[]) => void; // 選択された都道府県コード
+};
+
+export const CheckBoxList = ({ onChange }: CheckBoxListProps) => {
     // TODO: 変数名が都道府県関連に依存しているので、汎用的なコンポーネントにするため、チェックボックスリストとグラフをまとめたコンポーネント実装時に変数名を変更。
     // チェックボックスリスト作成時点では詳細な設計が思いつかなかったため、都道府県に関連した変数名をそのまま使用している。
 
@@ -43,6 +47,9 @@ export const CheckBoxList = () => {
 
         console.log('選択された都道府県:', newSelected);
         setSelectedPrefectureCodes(newSelected);
+
+        // 選択された都道府県コードを Set オブジェクトで管理しているため、文字列配列に変換してから渡す
+        onChange(Array.from(newSelected).map(String));
     };
 
     return (
