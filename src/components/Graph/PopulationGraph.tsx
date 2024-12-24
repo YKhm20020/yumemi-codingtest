@@ -12,10 +12,45 @@ type PopulationChartProps = {
 };
 
 export const PopulationChart = ({ prefCodes, dataType }: PopulationChartProps) => {
-    const [chartOptions, setChartOptions] = useState<Highcharts.Options | null>(null);
+    const [chartOptions, setChartOptions] = useState<Highcharts.Options>({
+        title: {
+            text: '都道府県別人口推移のグラフ',
+        },
+        xAxis: {
+            title: {
+                text: '年度',
+            },
+            crosshair: true,
+        },
+        yAxis: {
+            title: {
+                text: '人口数',
+            },
+            labels: {
+                formatter: function () {
+                    return Highcharts.numberFormat(Number(this.value), 0, '', ',');
+                },
+            },
+        },
+        series: [], // 初期表示はデータなし
+        credits: {
+            enabled: false,
+        },
+    });
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (prefCodes.length === 0) {
+            // チェックボックスが選択されていない場合、デフォルトの軸のみを表示
+            setChartOptions((defaultOptions) => ({
+                ...defaultOptions,
+                series: [],
+            }));
+            return;
+        }
+
+        // TODO: データ取得がチェックが入っているデータの数だけ起こってしまう。
+        // 新たにチェックが入ったデータだけを取得するようにする。
         const fetchData = async () => {
             try {
                 const seriesData = await Promise.all(
@@ -36,39 +71,10 @@ export const PopulationChart = ({ prefCodes, dataType }: PopulationChartProps) =
                     throw new Error('人口データの取得に失敗しました');
                 }
 
-                const options: Highcharts.Options = {
-                    title: {
-                        // TODO: 都道府県名を取得して 「都道府県別」 と差し替え
-                        text: `都道府県別${seriesData[0].name}推移`,
-                    },
-                    xAxis: {
-                        title: {
-                            text: '年度',
-                        },
-                        crosshair: true,
-                    },
-                    yAxis: {
-                        title: {
-                            text: '人口数',
-                        },
-                        labels: {
-                            formatter: function () {
-                                return Highcharts.numberFormat(Number(this.value), 0, '', ',');
-                            },
-                        },
-                    },
-                    tooltip: {
-                        formatter: function () {
-                            return `${this.series.name}<br/>${this.x}年: ${Highcharts.numberFormat(Number(this.y) || 0, 0, '', ',')}人`;
-                        },
-                    },
+                setChartOptions((defaultOptions) => ({
+                    ...defaultOptions,
                     series: seriesData,
-                    credits: {
-                        enabled: false,
-                    },
-                };
-
-                setChartOptions(options);
+                }));
             } catch (error) {
                 setError('データの取得に失敗しました。');
             }
