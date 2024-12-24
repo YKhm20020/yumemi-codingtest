@@ -2,20 +2,21 @@
 
 import { PopulationChart } from '@/components/Graph/PopulationGraph';
 import { CheckBoxList } from '@/components/List/CheckBoxList';
+import type { PrefectureData } from '@/types/population';
 import { useState } from 'react';
-
 export const PopulationDashboard = () => {
-    const [selectedPrefCodes, setSelectedPrefCodes] = useState<string[]>([]);
+    // 選択された都道府県データの配列を監視
+    const [selectedPrefectures, setSelectedPrefectures] = useState<PrefectureData[]>([]);
 
     // CheckBoxList から選択された都道府県コードを受け取る
-    const handlePrefCodeChange = (prefCodes: string[]) => {
-        setSelectedPrefCodes(prefCodes);
+    const handlePrefectureChange = (prefectureData: PrefectureData[]) => {
+        setSelectedPrefectures(prefectureData);
     };
 
     return (
         <div>
-            <CheckBoxList onChange={handlePrefCodeChange} />
-            <PopulationChart prefCodes={selectedPrefCodes} dataType={1} />
+            <CheckBoxList onChange={handlePrefectureChange} />
+            <PopulationChart prefectureData={selectedPrefectures} dataType={1} />
         </div>
     );
 };

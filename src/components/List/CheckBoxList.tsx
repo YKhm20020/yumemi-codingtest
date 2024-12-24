@@ -6,14 +6,14 @@ import { fetchPrefectures } from '@/utils/population/fetchPrefectures';
 import { useEffect, useState } from 'react';
 
 type CheckBoxListProps = {
-    onChange: (selectedPrefCodes: string[]) => void; // 選択された都道府県コード
+    onChange: (selectedPrefectures: PrefectureData[]) => void; // 選択された都道府県データ
 };
 
 export const CheckBoxList = ({ onChange }: CheckBoxListProps) => {
     // TODO: 変数名が都道府県関連に依存しているので、汎用的なコンポーネントにするため、チェックボックスリストとグラフをまとめたコンポーネント実装時に変数名を変更。
     // チェックボックスリスト作成時点では詳細な設計が思いつかなかったため、都道府県に関連した変数名をそのまま使用している。
 
-    const [selectedPrefectureCodes, setSelectedPrefectureCodes] = useState<Set<number>>(new Set());
+    const [selectedPrefectures, setSelectedPrefectures] = useState<PrefectureData[]>([]);
     const [prefectures, setPrefectures] = useState<PrefectureData[]>([]);
 
     // prefCode と 都道府県名のデータを取得
@@ -34,22 +34,22 @@ export const CheckBoxList = ({ onChange }: CheckBoxListProps) => {
 
     // チェックボックスの選択状態を更新する関数
     // TODO: グラフにデータを渡すため、CheckBoxList と PopulationGraph をまとめたコンポーネントで改めて実装
-    const handleChange = (prefCode: number, checked: boolean) => {
-        // 選択された prefCode を更新
-        // prefCode の順序は今回は必要ないので、Set オブジェクトで選択した prefCode を管理
-        const newSelected = new Set(selectedPrefectureCodes);
+    const handleChange = (prefecture: PrefectureData, checked: boolean) => {
+        // 選択された都道府県データを更新
+        // 順序は今回必要ではないため、Set オブジェクトで選択した都道府県データを管理
+        const newSelected = new Set(selectedPrefectures);
 
         if (checked) {
-            newSelected.add(prefCode);
+            newSelected.add(prefecture);
         } else {
-            newSelected.delete(prefCode);
+            newSelected.delete(prefecture);
         }
 
         console.log('選択された都道府県:', newSelected);
-        setSelectedPrefectureCodes(newSelected);
+        setSelectedPrefectures(Array.from(newSelected));
 
-        // 選択された都道府県コードを Set オブジェクトで管理しているため、文字列配列に変換してから渡す
-        onChange(Array.from(newSelected).map(String));
+        // 選択された都道府県データの配列を渡す
+        onChange(Array.from(newSelected));
     };
 
     return (
@@ -59,8 +59,8 @@ export const CheckBoxList = ({ onChange }: CheckBoxListProps) => {
                     key={prefecture.prefCode}
                     id={prefecture.prefCode}
                     label={prefecture.prefName}
-                    checked={selectedPrefectureCodes.has(prefecture.prefCode)}
-                    onChange={(checked) => handleChange(prefecture.prefCode, checked)}
+                    checked={selectedPrefectures.includes(prefecture)}
+                    onChange={(checked) => handleChange(prefecture, checked)}
                 />
             ))}
         </div>
