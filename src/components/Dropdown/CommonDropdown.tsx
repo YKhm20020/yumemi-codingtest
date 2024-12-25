@@ -2,22 +2,22 @@
 
 import type React from 'react';
 
-type DropDownOption = {
+type DropdownOption = {
     value: number; // 値
     label: string; // ラベル
 };
 
-type CommonDropDownProps = {
+type CommonDropdownProps = {
     label: string; // ラベル
-    options: DropDownOption[]; // 選択肢の配列
+    options: DropdownOption[]; // 選択肢の配列
     onChange: (selectedOption: number) => void; // 選択肢が変更された場合に呼び出される関数
 };
 
-export const CommonDropDown: React.FC<CommonDropDownProps> = ({
+export const CommonDropdown: React.FC<CommonDropdownProps> = ({
     label,
     options,
     onChange,
-}: CommonDropDownProps) => {
+}: CommonDropdownProps) => {
     return (
         <div>
             <label htmlFor={label}>{label}</label>
