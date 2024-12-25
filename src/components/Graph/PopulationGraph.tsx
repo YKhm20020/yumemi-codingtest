@@ -45,11 +45,21 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
 
     // 前回の prefectureData を保持するための ref オブジェクト
     const prevPrefectureDataRef = useRef<PrefectureData[]>([]);
+
     // キャッシュ用のオブジェクト
     const populationDataCache = useRef<{ [key: number]: PopulationDataPoint[] }>({});
 
-    // 人口種別が変更された時にタイトルを更新
+    // 人口種別が変更された時の処理
     useEffect(() => {
+        // 指定している人口データの種類が 0 から 3 の範囲外の場合はエラーを返す
+        if (dataType < 0 || dataType > 3) {
+            throw new Error('指定した種類のデータ取得には対応していません。');
+        }
+
+        // 前回選択時の人口種別の人口データを表示しないようにするため、キャッシュをクリア
+        populationDataCache.current = {};
+
+        // グラフのタイトルを更新
         setChartOptions((prevOptions) => ({
             ...prevOptions,
             title: {
@@ -58,12 +68,8 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
         }));
     }, [dataType]);
 
+    // チェック状態が変更された時の処理
     useEffect(() => {
-        // 指定している人口データの種類が 0 から 3 の範囲外の場合はエラーを返す
-        if (dataType < 0 || dataType > 3) {
-            throw new Error('指定した種類のデータが取得できませんでした。');
-        }
-
         // 前回の prefectureData を取得
         const prevPrefectureData = prevPrefectureDataRef.current;
 
@@ -81,10 +87,14 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
         // キャッシュを確認して、キャッシュにある場合はキャッシュを使用し、キャッシュにない場合は新たにデータを取得する
         const updateSeriesData = async () => {
             try {
+                // 新しく表示する人口データを格納する配列
                 const newSeriesData: Highcharts.SeriesLineOptions[] = [];
+
+                // 新しく都道府県が選択された場合
                 if (newPrefecture) {
                     // キャッシュを確認
                     if (populationDataCache.current[newPrefecture.prefCode]) {
+                        // キャッシュにある場合はキャッシュの人口データをグラフに表示
                         newSeriesData.push({
                             type: 'line' as const,
                             name: newPrefecture.prefName,
@@ -93,7 +103,7 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                             ),
                         });
                     } else {
-                        // キャッシュにない場合はデータを取得
+                        // キャッシュにない場合は新たに人口データを取得
                         const data = await fetchPerYearPopulation(
                             newPrefecture.prefCode.toString(),
                         );
@@ -106,6 +116,7 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                         populationDataCache.current[newPrefecture.prefCode] =
                             data.result.data[dataType].data;
 
+                        // グラフに人口データを表示
                         newSeriesData.push({
                             type: 'line' as const,
                             name: newPrefecture.prefName,
