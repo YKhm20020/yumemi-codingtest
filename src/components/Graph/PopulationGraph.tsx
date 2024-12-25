@@ -4,7 +4,7 @@ import type { PopulationDataPoint, PrefectureData } from '@/types/population';
 import { fetchPerYearPopulation } from '@/utils/population/fetchPerYearPopulation';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type PopulationGraphProps = {
     prefectureData: PrefectureData[]; // 選択された都道府県データ、prefCode と 都道府県名の組の配列
@@ -12,6 +12,7 @@ type PopulationGraphProps = {
 };
 
 export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphProps) => {
+    // 人口データを表示するグラフのオプション
     const [chartOptions, setChartOptions] = useState<Highcharts.Options>({
         title: {
             text: '都道府県別人口推移のグラフ',
@@ -37,51 +38,83 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
             enabled: false,
         },
     });
+
+    // エラーを表示するための state
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (!prefectureData?.length) {
-            // チェックボックスが選択されていない場合、デフォルトの軸のみを表示
-            setChartOptions((defaultOptions) => ({
-                ...defaultOptions,
-                series: [],
-            }));
-            return;
-        }
+    // 前回の prefectureData を保持するための ref オブジェクト
+    const prevPrefectureDataRef = useRef<PrefectureData[]>([]);
+    // キャッシュ用のオブジェクト
+    const populationDataCache = useRef<{ [key: number]: PopulationDataPoint[] }>({});
 
-        // TODO: データ取得がチェックが入っているデータの数だけ起こってしまう。
-        // 新たにチェックが入ったデータだけを取得するようにする。
-        const fetchData = async () => {
+    // TODO: 適切なエラー処理の実装
+    useEffect(() => {
+        // 前回の prefectureData を取得
+        const prevPrefectureData = prevPrefectureDataRef.current;
+
+        // 新しくチェックが入った都道府県を特定
+        const newPrefecture = prefectureData.find(
+            (pref) => !prevPrefectureData.some((prevPref) => prevPref.prefCode === pref.prefCode),
+        );
+
+        // チェックが外れた都道府県を特定
+        const removedPrefectures = prevPrefectureData.filter(
+            (prevPref) => !prefectureData.some((pref) => pref.prefCode === prevPref.prefCode),
+        );
+
+        // グラフに表示する人口データを更新する関数
+        // キャッシュを確認して、キャッシュにある場合はキャッシュを使用し、キャッシュにない場合は新たにデータを取得する
+        const updateSeriesData = async () => {
             try {
-                // 選択された全都道府県データを取得し、グラフを作成
-                const seriesData = await Promise.all(
-                    prefectureData.map(async (prefecture) => {
-                        const data = await fetchPerYearPopulation(prefecture.prefCode.toString());
-                        return {
+                const newSeriesData: Highcharts.SeriesLineOptions[] = [];
+                if (newPrefecture) {
+                    // キャッシュを確認
+                    if (populationDataCache.current[newPrefecture.prefCode]) {
+                        newSeriesData.push({
                             type: 'line' as const,
-                            name: prefecture.prefName,
+                            name: newPrefecture.prefName,
+                            data: populationDataCache.current[newPrefecture.prefCode].map(
+                                (point: PopulationDataPoint) => [point.year, point.value],
+                            ),
+                        });
+                    } else {
+                        // キャッシュにない場合はデータを取得
+                        const data = await fetchPerYearPopulation(
+                            newPrefecture.prefCode.toString(),
+                        );
+                        // キャッシュに保存
+                        populationDataCache.current[newPrefecture.prefCode] =
+                            data.result.data[dataType].data;
+
+                        newSeriesData.push({
+                            type: 'line' as const,
+                            name: newPrefecture.prefName,
                             data: data.result.data[dataType].data.map(
                                 (point: PopulationDataPoint) => [point.year, point.value],
                             ),
-                        };
-                    }),
-                );
-                console.log(seriesData);
-
-                if (!seriesData) {
-                    throw new Error('人口データの取得に失敗しました');
+                        });
+                    }
                 }
 
                 setChartOptions((defaultOptions) => ({
                     ...defaultOptions,
-                    series: seriesData,
+                    series: [
+                        ...(defaultOptions.series || []).filter(
+                            (series) =>
+                                !removedPrefectures.some((pref) => pref.prefName === series.name),
+                        ),
+                        ...newSeriesData,
+                    ],
                 }));
             } catch (error) {
                 setError('データの取得に失敗しました。');
             }
         };
 
-        fetchData();
+        updateSeriesData();
+
+        // 現在の prefectureData をキャッシュ
+        prevPrefectureDataRef.current = prefectureData;
     }, [prefectureData, dataType]);
 
     if (error) {
