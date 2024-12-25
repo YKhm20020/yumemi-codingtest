@@ -13,4 +13,3 @@ export const PopulationTypeLabels = {
     [PopulationTypes.WORKING]: '生産年齢人口',
     [PopulationTypes.ELDERLY]: '老年人口',
 };
-
