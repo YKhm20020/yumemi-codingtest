@@ -21,13 +21,20 @@ export const PopulationDashboard = () => {
 
     // 人口種別の選択が変更された場合に呼び出される関数
     const handlePopulationTypeChange = (value: number) => {
+        // 人口種別を更新
         setPopulationType(value);
+
+        // チェックボックスの選択状態をリセット
+        setSelectedPrefectures([]);
     };
 
     return (
         <div>
             <PopulationTypeDropdown onChange={handlePopulationTypeChange} />
-            <CheckBoxList onChange={handlePrefectureChange} />
+            <CheckBoxList
+                selectedPrefectures={selectedPrefectures}
+                onChange={handlePrefectureChange}
+            />
             <PopulationGraph prefectureData={selectedPrefectures} dataType={populationType} />
         </div>
     );

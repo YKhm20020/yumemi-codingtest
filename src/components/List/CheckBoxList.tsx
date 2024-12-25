@@ -9,13 +9,14 @@ type CheckBoxListProps = {
     // チェック状態が変更された場合に呼び出される関数
     // 親コンポーネントに選択された都道府県データの配列を渡す
     onChange: (selectedPrefectures: PrefectureData[]) => void;
+    // 選択された都道府県データの配列
+    selectedPrefectures: PrefectureData[];
 };
 
-export const CheckBoxList = ({ onChange }: CheckBoxListProps) => {
+export const CheckBoxList = ({ onChange, selectedPrefectures }: CheckBoxListProps) => {
     // TODO: 変数名が都道府県関連に依存しているので、汎用的なコンポーネントにするため、チェックボックスリストとグラフをまとめたコンポーネント実装時に変数名を変更。
     // チェックボックスリスト作成時点では詳細な設計が思いつかなかったため、都道府県に関連した変数名をそのまま使用している。
 
-    const [selectedPrefectures, setSelectedPrefectures] = useState<PrefectureData[]>([]);
     const [prefectures, setPrefectures] = useState<PrefectureData[]>([]);
 
     // prefCode と 都道府県名のデータを取得
@@ -46,9 +47,6 @@ export const CheckBoxList = ({ onChange }: CheckBoxListProps) => {
         } else {
             newSelected.delete(prefecture);
         }
-
-        console.log('選択された都道府県:', newSelected);
-        setSelectedPrefectures(Array.from(newSelected));
 
         // 選択された都道府県データの配列を渡す
         onChange(Array.from(newSelected));
