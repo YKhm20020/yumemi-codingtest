@@ -47,8 +47,12 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
     // キャッシュ用のオブジェクト
     const populationDataCache = useRef<{ [key: number]: PopulationDataPoint[] }>({});
 
-    // TODO: 適切なエラー処理の実装
     useEffect(() => {
+        // 指定している人口データの種類が 0 から 3 の範囲外の場合はエラーを返す
+        if (dataType < 0 || dataType > 3) {
+            throw new Error('指定した種類のデータが取得できませんでした。');
+        }
+
         // 前回の prefectureData を取得
         const prevPrefectureData = prevPrefectureDataRef.current;
 
@@ -82,6 +86,11 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                         const data = await fetchPerYearPopulation(
                             newPrefecture.prefCode.toString(),
                         );
+
+                        if (data.result.data[dataType].data.length === 0) {
+                            throw new Error('指定した種類の人口データが取得できませんでした。');
+                        }
+
                         // キャッシュに保存
                         populationDataCache.current[newPrefecture.prefCode] =
                             data.result.data[dataType].data;
@@ -107,7 +116,11 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                     ],
                 }));
             } catch (error) {
-                setError('データの取得に失敗しました。');
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError('データの取得に失敗しました。');
+                }
             }
         };
 
