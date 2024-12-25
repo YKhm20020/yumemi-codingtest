@@ -6,7 +6,9 @@ import { fetchPrefectures } from '@/utils/population/fetchPrefectures';
 import { useEffect, useState } from 'react';
 
 type CheckBoxListProps = {
-    onChange: (selectedPrefectures: PrefectureData[]) => void; // 選択された都道府県データ
+    // チェック状態が変更された場合に呼び出される関数
+    // 親コンポーネントに選択された都道府県データの配列を渡す
+    onChange: (selectedPrefectures: PrefectureData[]) => void;
 };
 
 export const CheckBoxList = ({ onChange }: CheckBoxListProps) => {
