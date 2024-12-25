@@ -1,11 +1,11 @@
 'use client';
 
 import type { PopulationDataPoint, PrefectureData } from '@/types/population';
+import { PopulationTypeLabels } from '@/types/population/populationType';
 import { fetchPerYearPopulation } from '@/utils/population/fetchPerYearPopulation';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useRef, useState } from 'react';
-
 type PopulationGraphProps = {
     prefectureData: PrefectureData[]; // 選択された都道府県データ、prefCode と 都道府県名の組の配列
     dataType: number; // 表示する人口データの種類 (0: 総人口, 1: 年少人口, 2: 生産年齢人口, 3: 老年人口)
@@ -46,6 +46,16 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
     const prevPrefectureDataRef = useRef<PrefectureData[]>([]);
     // キャッシュ用のオブジェクト
     const populationDataCache = useRef<{ [key: number]: PopulationDataPoint[] }>({});
+
+    // 人口種別が変更された時にタイトルを更新
+    useEffect(() => {
+        setChartOptions((prevOptions) => ({
+            ...prevOptions,
+            title: {
+                text: `都道府県別${PopulationTypeLabels[dataType]}推移のグラフ`,
+            },
+        }));
+    }, [dataType]);
 
     useEffect(() => {
         // 指定している人口データの種類が 0 から 3 の範囲外の場合はエラーを返す
