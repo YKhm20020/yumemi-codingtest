@@ -4,12 +4,14 @@ import { PopulationTypeDropdown } from '@/components/Dropdown/PopulationTypeDrop
 import { PopulationGraph } from '@/components/Graph/PopulationGraph';
 import { CheckBoxList } from '@/components/List/CheckBoxList';
 import type { PrefectureData } from '@/types/population';
-import { PopulationTypeLabels, PopulationTypes } from '@/types/population/populationType';
+import { PopulationTypes } from '@/types/population/populationType';
 import { useState } from 'react';
 
 export const PopulationDashboard = () => {
     // 選択された都道府県データの配列を監視
     const [selectedPrefectures, setSelectedPrefectures] = useState<PrefectureData[]>([]);
+
+    // 選択された人口種別をIDで監視
     const [populationType, setPopulationType] = useState<number>(PopulationTypes.TOTAL);
 
     // CheckBoxList から選択された都道府県コードを受け取る
