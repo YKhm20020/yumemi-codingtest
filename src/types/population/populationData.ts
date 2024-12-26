@@ -29,5 +29,5 @@ export type PopulationDataPerYear = {
 // 地域単位、年ごとの人口データ取得時の返り値の型
 export type PopulationDataPerYearResponse = {
     message: string | null; // メッセージ
-    result: PopulationDataPerYear[]; // 年ごとの人口データの配列
+    result: PopulationDataPerYear; // 年ごとの人口データ
 };
