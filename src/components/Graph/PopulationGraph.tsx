@@ -40,9 +40,6 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
         },
     });
 
-    // 現在の年度を取得
-    const currentYear = new Date().getFullYear();
-
     // エラーを表示するための state
     const [error, setError] = useState<string | null>(null);
 
@@ -117,9 +114,9 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                             throw new Error('指定した種類の人口データが取得できませんでした。');
                         }
 
-                        // 現在の年度以前のデータのみをフィルタリング
+                        // 実績値のみ（区切り年以前のデータ）をフィルタリング
                         const filteredData = data.result.data[dataType].data.filter(
-                            (point: PopulationDataPoint) => point.year <= currentYear,
+                            (point: PopulationDataPoint) => point.year <= data.result.boundaryYear,
                         );
 
                         // キャッシュに保存
@@ -161,7 +158,7 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
 
         // 現在の prefectureData をキャッシュ
         prevPrefectureDataRef.current = prefectureData;
-    }, [prefectureData, dataType, currentYear]);
+    }, [prefectureData, dataType]);
 
     if (error) {
         return <div>{error}</div>;
