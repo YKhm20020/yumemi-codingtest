@@ -95,6 +95,7 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                     // キャッシュを確認
                     if (populationDataCache.current[newPrefecture.prefCode]) {
                         // キャッシュにある場合はキャッシュの人口データをグラフに表示
+                        // キャッシュするデータは、現在の年度以前のデータにフィルタリング済みのため、再度フィルタリングする必要はない
                         newSeriesData.push({
                             type: 'line' as const,
                             name: newPrefecture.prefName,
@@ -108,21 +109,27 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                             newPrefecture.prefCode.toString(),
                         );
 
+                        // 取得した人口データの配列が空の場合はエラーを返す
                         if (data.result.data[dataType].data.length === 0) {
                             throw new Error('指定した種類の人口データが取得できませんでした。');
                         }
 
+                        // 実績値のみ（区切り年以前のデータ）をフィルタリング
+                        const filteredData = data.result.data[dataType].data.filter(
+                            (point: PopulationDataPoint) => point.year <= data.result.boundaryYear,
+                        );
+
                         // キャッシュに保存
-                        populationDataCache.current[newPrefecture.prefCode] =
-                            data.result.data[dataType].data;
+                        populationDataCache.current[newPrefecture.prefCode] = filteredData;
 
                         // グラフに人口データを表示
                         newSeriesData.push({
                             type: 'line' as const,
                             name: newPrefecture.prefName,
-                            data: data.result.data[dataType].data.map(
-                                (point: PopulationDataPoint) => [point.year, point.value],
-                            ),
+                            data: filteredData.map((point: PopulationDataPoint) => [
+                                point.year,
+                                point.value,
+                            ]),
                         });
                     }
                 }
@@ -146,6 +153,7 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
             }
         };
 
+        // グラフに表示する人口データを更新
         updateSeriesData();
 
         // 現在の prefectureData をキャッシュ

@@ -1,6 +1,8 @@
-import type { PopulationResponse } from '@/types/population/populationData';
+import type { PopulationDataPerYearResponse } from '@/types/population/populationData';
 
-export async function fetchPerYearPopulation(prefCode: string): Promise<PopulationResponse> {
+export async function fetchPerYearPopulation(
+    prefCode: string,
+): Promise<PopulationDataPerYearResponse> {
     const url = process.env.NEXT_PUBLIC_RESAS_API_URL || '';
     const apiKey = process.env.NEXT_PUBLIC_RESAS_API_KEY || '';
 
