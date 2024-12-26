@@ -21,7 +21,7 @@ export type PopulationDataPoint = {
 export type PopulationResponse = {
     message: string | null; // メッセージ
     result: {
-        boundaryYear: number; // 境界年
+        boundaryYear: number; // 実績値と推計値の区切り年
         data: {
             label: string; // ラベル
             data: PopulationDataPoint[]; // 人口データ
