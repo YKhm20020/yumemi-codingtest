@@ -1,4 +1,4 @@
-import type { PrefectureResponse } from '@/types/population';
+import type { PrefectureResponse } from '@/types/population/populationData';
 
 export async function fetchPrefectures(): Promise<PrefectureResponse> {
     const url = process.env.NEXT_PUBLIC_RESAS_API_URL || '';

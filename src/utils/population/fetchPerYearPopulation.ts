@@ -1,4 +1,4 @@
-import type { PopulationResponse } from '@/types/population';
+import type { PopulationResponse } from '@/types/population/populationData';
 
 export async function fetchPerYearPopulation(prefCode: string): Promise<PopulationResponse> {
     const url = process.env.NEXT_PUBLIC_RESAS_API_URL || '';
