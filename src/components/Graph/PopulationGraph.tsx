@@ -34,6 +34,21 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                 },
             },
         },
+        tooltip: {
+            // ここだけどうしても型定義がうまくいかなかった
+            formatter: function (this: any): string {
+                const point = this.point as { x: number; y: number; rate?: number | null };
+                const baseText = `${this.series.name}<br/>
+                    ${point.x}年: ${Highcharts.numberFormat(point.y, 0, '', ',')}人`;
+
+                // 総人口以外の場合は割合も表示
+                if (dataType !== 0 && point.rate != null) {
+                    return `${baseText}<br/>
+                    割合: ${point.rate.toFixed(1)}%`;
+                }
+                return baseText;
+            },
+        },
         series: [], // 初期表示はデータなし
         credits: {
             enabled: false,
@@ -126,10 +141,11 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                         newSeriesData.push({
                             type: 'line' as const,
                             name: newPrefecture.prefName,
-                            data: filteredData.map((point: PopulationDataPoint) => [
-                                point.year,
-                                point.value,
-                            ]),
+                            data: filteredData.map((point: PopulationDataPoint) => ({
+                                x: point.year,
+                                y: point.value,
+                                rate: point.rate,
+                            })),
                         });
                     }
                 }
