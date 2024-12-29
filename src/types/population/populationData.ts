@@ -14,7 +14,7 @@ export type PrefectureResponse = {
 export type PopulationDataPoint = {
     year: number; // 年
     value: number; // 人口
-    rate: number; // 人口の変化率
+    rate: number | null; // 人口種別ごとの全人口に対する割合、総人口の場合は null
 };
 
 // 年ごとの人口データについてのデータ型
