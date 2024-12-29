@@ -2,7 +2,7 @@
 
 import { CommonCheckBox } from '@/components/CheckBox/CommonCheckBox';
 import type { PrefectureData } from '@/types/population/populationData';
-import { fetchPrefectures } from '@/utils/population/fetchPrefectures';
+import { fetchPrefectures } from '@/utils/prefecture/fetchPrefectures';
 import { useEffect, useState } from 'react';
 
 type CheckBoxListProps = {
