@@ -29,7 +29,7 @@ export const PopulationDashboard = () => {
     };
 
     return (
-        <div>
+        <div className='flex flex-col items-center gap-y-8 max-w-screen-md mx-auto'>
             <PopulationTypeDropdown onChange={handlePopulationTypeChange} />
             <PrefectureCheckBoxList
                 selectedPrefectures={selectedPrefectures}

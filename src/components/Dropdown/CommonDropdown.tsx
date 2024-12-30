@@ -19,9 +19,15 @@ export const CommonDropdown: React.FC<CommonDropdownProps> = ({
     onChange,
 }: CommonDropdownProps) => {
     return (
-        <div>
-            <label htmlFor={dropdownLabel}>{dropdownLabel}</label>
-            <select id={dropdownLabel} onChange={(e) => onChange(Number(e.target.value))}>
+        <div className='flex items-center gap-x-4'>
+            <label className='font-bold min-w-24 text-right' htmlFor={dropdownLabel}>
+                {dropdownLabel}
+            </label>
+            <select
+                id={dropdownLabel}
+                onChange={(e) => onChange(Number(e.target.value))}
+                className='px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+            >
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
