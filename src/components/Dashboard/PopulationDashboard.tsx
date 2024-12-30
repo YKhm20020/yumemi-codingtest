@@ -2,7 +2,7 @@
 
 import { PopulationTypeDropdown } from '@/components/Dropdown/PopulationTypeDropdown';
 import { PopulationGraph } from '@/components/Graph/PopulationGraph';
-import { CheckBoxList } from '@/components/List/CheckBoxList';
+import { PrefectureCheckBoxList } from '@/components/List/PrefectureCheckBoxList';
 import type { PrefectureData } from '@/types/population/populationData';
 import { PopulationTypes } from '@/types/population/populationType';
 import { useState } from 'react';
@@ -31,7 +31,7 @@ export const PopulationDashboard = () => {
     return (
         <div>
             <PopulationTypeDropdown onChange={handlePopulationTypeChange} />
-            <CheckBoxList
+            <PrefectureCheckBoxList
                 selectedPrefectures={selectedPrefectures}
                 onChange={handlePrefectureChange}
             />

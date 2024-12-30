@@ -5,7 +5,7 @@ import type { PrefectureData } from '@/types/population/populationData';
 import { fetchPrefectures } from '@/utils/prefecture/fetchPrefectures';
 import { useEffect, useState } from 'react';
 
-type CheckBoxListProps = {
+type PrefectureCheckBoxListProps = {
     // チェック状態が変更された場合に呼び出される関数
     // 親コンポーネントに選択された都道府県データの配列を渡す
     onChange: (selectedPrefectures: PrefectureData[]) => void;
@@ -13,7 +13,10 @@ type CheckBoxListProps = {
     selectedPrefectures: PrefectureData[];
 };
 
-export const CheckBoxList = ({ onChange, selectedPrefectures }: CheckBoxListProps) => {
+export const PrefectureCheckBoxList = ({
+    onChange,
+    selectedPrefectures,
+}: PrefectureCheckBoxListProps) => {
     // TODO: 変数名が都道府県関連に依存しているので、汎用的なコンポーネントにするため、チェックボックスリストとグラフをまとめたコンポーネント実装時に変数名を変更。
     // チェックボックスリスト作成時点では詳細な設計が思いつかなかったため、都道府県に関連した変数名をそのまま使用している。
 
