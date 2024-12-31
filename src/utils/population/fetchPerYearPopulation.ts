@@ -3,29 +3,19 @@ import type { PopulationDataPerYearResponse } from '@/types/population/populatio
 export async function fetchPerYearPopulation(
     prefCode: string,
 ): Promise<PopulationDataPerYearResponse> {
-    const url = process.env.NEXT_PUBLIC_RESAS_API_URL || '';
-    const apiKey = process.env.NEXT_PUBLIC_RESAS_API_KEY || '';
-
     try {
-        const response = await fetch(
-            `${url}/api/v1/population/composition/perYear?prefCode=${prefCode}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': apiKey,
-                },
-            },
-        );
+        const response = await fetch(`/api/population?prefCode=${prefCode}`);
+        if (!response.ok) {
+            throw new Error('人口データの取得に失敗しました。');
+        }
 
         const json = await response.json();
 
-        if (json?.data?.errorMessage) {
-            throw new Error(json.data.errorMessage);
-        }
-
         return json;
     } catch (error) {
-        throw new Error(error?.toString() || 'Population データの取得に失敗しました');
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error('人口データの取得にあたり、予期しないエラーが発生しました');
     }
 }
