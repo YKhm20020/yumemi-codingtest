@@ -31,6 +31,7 @@
     "@types/react-dom": "^19",
     "@types/testing-library__jest-dom": "^5.14.9",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^2.1.8",
     "@vitest/ui": "^2.1.8",
     "jsdom": "^25.0.1",
     "postcss": "^8",
