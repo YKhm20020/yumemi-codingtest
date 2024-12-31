@@ -22,7 +22,7 @@ describe('PopulationGraph', () => {
     });
 
     it('データ取得に失敗した場合はエラーメッセージが表示される', async () => {
-        const errorMessage = 'データの取得に失敗しました。';
+        const errorMessage = '人口データの取得に失敗しました。';
         (fetchPerYearPopulation as Mock).mockRejectedValue(new Error(errorMessage));
 
         render(<PopulationGraph prefectureData={mockPrefectureData} populationType={0} />);
