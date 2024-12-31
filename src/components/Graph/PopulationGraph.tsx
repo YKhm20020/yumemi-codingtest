@@ -163,9 +163,9 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                 }));
             } catch (error) {
                 if (error instanceof Error) {
-                    setError(error.message);
+                    setError('人口データの取得に失敗しました。'); // ユーザー向けのエラーメッセージ
                 } else {
-                    setError('データの取得に失敗しました。');
+                    setError('予期しないエラーが発生しました。');
                 }
             }
         };
