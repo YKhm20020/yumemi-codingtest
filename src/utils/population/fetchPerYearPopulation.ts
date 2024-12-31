@@ -18,14 +18,17 @@ export async function fetchPerYearPopulation(
             },
         );
 
-        const json = await response.json();
-
-        if (json?.data?.errorMessage) {
-            throw new Error(json.data.errorMessage);
+        if (!response.ok) {
+            throw new Error('人口データの取得に失敗しました。');
         }
+
+        const json = await response.json();
 
         return json;
     } catch (error) {
-        throw new Error(error?.toString() || 'Population データの取得に失敗しました');
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error('人口データの取得にあたり、予期しないエラーが発生しました');
     }
 }

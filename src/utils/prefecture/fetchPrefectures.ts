@@ -13,14 +13,17 @@ export async function fetchPrefectures(): Promise<PrefectureResponse> {
             },
         });
 
-        const json = await response.json();
-
-        if (json?.data?.errorMessage) {
-            throw new Error(json.data.errorMessage);
+        if (!response.ok) {
+            throw new Error('都道府県データの取得に失敗しました。');
         }
+
+        const json = await response.json();
 
         return json;
     } catch (error) {
-        throw new Error(error?.toString() || 'Prefectures データの取得に失敗しました');
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error('都道府県データの取得にあたり、予期しないエラーが発生しました');
     }
 }
