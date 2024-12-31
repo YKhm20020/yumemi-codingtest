@@ -2,9 +2,9 @@
 
 import { PopulationTypeDropdown } from '@/components/Dropdown/PopulationTypeDropdown';
 import { PopulationGraph } from '@/components/Graph/PopulationGraph';
-import { CheckBoxList } from '@/components/List/CheckBoxList';
-import type { PrefectureData } from '@/types/population/populationData';
+import { PrefectureCheckBoxList } from '@/components/List/PrefectureCheckBoxList';
 import { PopulationTypes } from '@/types/population/populationType';
+import type { PrefectureData } from '@/types/prefecture/prefectureData';
 import { useState } from 'react';
 
 export const PopulationDashboard = () => {
@@ -29,13 +29,13 @@ export const PopulationDashboard = () => {
     };
 
     return (
-        <div>
+        <div className='flex flex-col items-center gap-y-8 max-w-screen-md mx-auto'>
             <PopulationTypeDropdown onChange={handlePopulationTypeChange} />
-            <CheckBoxList
+            <PrefectureCheckBoxList
                 selectedPrefectures={selectedPrefectures}
                 onChange={handlePrefectureChange}
             />
-            <PopulationGraph prefectureData={selectedPrefectures} dataType={populationType} />
+            <PopulationGraph prefectureData={selectedPrefectures} populationType={populationType} />
         </div>
     );
 };

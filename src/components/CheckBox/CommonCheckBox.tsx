@@ -17,7 +17,7 @@ export const CommonCheckBox: React.FC<CommonCheckBoxProps> = ({
     const inputId = `checkbox-${id}`;
 
     return (
-        <div className='flex items-center'>
+        <div className='flex items-center gap-x-2'>
             <input
                 type='checkbox'
                 id={inputId}

@@ -1,7 +1,8 @@
 'use client';
 
-import type { PopulationDataPoint, PrefectureData } from '@/types/population/populationData';
+import type { PopulationDataPoint } from '@/types/population/populationData';
 import { PopulationTypeLabels } from '@/types/population/populationType';
+import type { PrefectureData } from '@/types/prefecture/prefectureData';
 import { fetchPerYearPopulation } from '@/utils/population/fetchPerYearPopulation';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
@@ -9,10 +10,10 @@ import { useEffect, useRef, useState } from 'react';
 
 type PopulationGraphProps = {
     prefectureData: PrefectureData[]; // 選択された都道府県データ、prefCode と 都道府県名の組の配列
-    dataType: number; // 表示する人口データの種類 (0: 総人口, 1: 年少人口, 2: 生産年齢人口, 3: 老年人口)
+    populationType: number; // 表示する人口データの種類 (0: 総人口, 1: 年少人口, 2: 生産年齢人口, 3: 老年人口)
 };
 
-export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphProps) => {
+export const PopulationGraph = ({ prefectureData, populationType }: PopulationGraphProps) => {
     // 人口データを表示するグラフのオプション
     const [chartOptions, setChartOptions] = useState<Highcharts.Options>({
         title: {
@@ -34,6 +35,21 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                 },
             },
         },
+        tooltip: {
+            // ここだけどうしても型定義がうまくいかなかった
+            formatter: function (this: any): string {
+                const point = this.point as { x: number; y: number; rate?: number | null };
+                const baseText = `${this.series.name}<br/>
+                    ${point.x}年: ${Highcharts.numberFormat(point.y, 0, '', ',')}人`;
+
+                // 総人口以外の場合は割合も表示
+                if (populationType !== 0 && point.rate != null) {
+                    return `${baseText}<br/>
+                    割合: ${point.rate.toFixed(1)}%`;
+                }
+                return baseText;
+            },
+        },
         series: [], // 初期表示はデータなし
         credits: {
             enabled: false,
@@ -52,7 +68,7 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
     // 人口種別が変更された時の処理
     useEffect(() => {
         // 指定している人口データの種類が 0 から 3 の範囲外の場合はエラーを返す
-        if (dataType < 0 || dataType > 3) {
+        if (populationType < 0 || populationType > 3) {
             throw new Error('指定した種類のデータ取得には対応していません。');
         }
 
@@ -63,10 +79,10 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
         setChartOptions((prevOptions) => ({
             ...prevOptions,
             title: {
-                text: `都道府県別${PopulationTypeLabels[dataType]}推移のグラフ`,
+                text: `都道府県別${PopulationTypeLabels[populationType]}推移のグラフ`,
             },
         }));
-    }, [dataType]);
+    }, [populationType]);
 
     // チェック状態が変更された時の処理
     useEffect(() => {
@@ -110,12 +126,12 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                         );
 
                         // 取得した人口データの配列が空の場合はエラーを返す
-                        if (data.result.data[dataType].data.length === 0) {
+                        if (data.result.data[populationType].data.length === 0) {
                             throw new Error('指定した種類の人口データが取得できませんでした。');
                         }
 
                         // 実績値のみ（区切り年以前のデータ）をフィルタリング
-                        const filteredData = data.result.data[dataType].data.filter(
+                        const filteredData = data.result.data[populationType].data.filter(
                             (point: PopulationDataPoint) => point.year <= data.result.boundaryYear,
                         );
 
@@ -126,10 +142,11 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                         newSeriesData.push({
                             type: 'line' as const,
                             name: newPrefecture.prefName,
-                            data: filteredData.map((point: PopulationDataPoint) => [
-                                point.year,
-                                point.value,
-                            ]),
+                            data: filteredData.map((point: PopulationDataPoint) => ({
+                                x: point.year,
+                                y: point.value,
+                                rate: point.rate,
+                            })),
                         });
                     }
                 }
@@ -146,9 +163,9 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
                 }));
             } catch (error) {
                 if (error instanceof Error) {
-                    setError(error.message);
+                    setError('人口データの取得に失敗しました。'); // ユーザー向けのエラーメッセージ
                 } else {
-                    setError('データの取得に失敗しました。');
+                    setError('予期しないエラーが発生しました。');
                 }
             }
         };
@@ -158,7 +175,7 @@ export const PopulationGraph = ({ prefectureData, dataType }: PopulationGraphPro
 
         // 現在の prefectureData をキャッシュ
         prevPrefectureDataRef.current = prefectureData;
-    }, [prefectureData, dataType]);
+    }, [prefectureData, populationType]);
 
     if (error) {
         return <div>{error}</div>;
