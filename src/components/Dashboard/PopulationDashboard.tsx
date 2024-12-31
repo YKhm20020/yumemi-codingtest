@@ -3,8 +3,8 @@
 import { PopulationTypeDropdown } from '@/components/Dropdown/PopulationTypeDropdown';
 import { PopulationGraph } from '@/components/Graph/PopulationGraph';
 import { PrefectureCheckBoxList } from '@/components/List/PrefectureCheckBoxList';
-import type { PrefectureData } from '@/types/population/populationData';
 import { PopulationTypes } from '@/types/population/populationType';
+import type { PrefectureData } from '@/types/prefecture/prefectureData';
 import { useState } from 'react';
 
 export const PopulationDashboard = () => {

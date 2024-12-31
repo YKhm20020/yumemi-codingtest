@@ -1,7 +1,8 @@
 'use client';
 
-import type { PopulationDataPoint, PrefectureData } from '@/types/population/populationData';
+import type { PopulationDataPoint } from '@/types/population/populationData';
 import { PopulationTypeLabels } from '@/types/population/populationType';
+import type { PrefectureData } from '@/types/prefecture/prefectureData';
 import { fetchPerYearPopulation } from '@/utils/population/fetchPerYearPopulation';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';

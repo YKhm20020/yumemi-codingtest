@@ -1,7 +1,7 @@
 'use client';
 
 import { CommonCheckBox } from '@/components/CheckBox/CommonCheckBox';
-import type { PrefectureData } from '@/types/population/populationData';
+import type { PrefectureData } from '@/types/prefecture/prefectureData';
 import { fetchPrefectures } from '@/utils/prefecture/fetchPrefectures';
 import { useEffect, useState } from 'react';
 
