@@ -17,7 +17,7 @@ describe('PopulationGraph', () => {
     });
 
     it('初期表示するグラフのタイトルが正しく表示される', async () => {
-        render(<PopulationGraph prefectureData={[]} dataType={0} />);
+        render(<PopulationGraph prefectureData={[]} populationType={0} />);
         expect(screen.getByText('都道府県別総人口推移のグラフ')).toBeInTheDocument();
     });
 
@@ -25,7 +25,7 @@ describe('PopulationGraph', () => {
         const errorMessage = 'データの取得に失敗しました。';
         (fetchPerYearPopulation as Mock).mockRejectedValue(new Error(errorMessage));
 
-        render(<PopulationGraph prefectureData={mockPrefectureData} dataType={0} />);
+        render(<PopulationGraph prefectureData={mockPrefectureData} populationType={0} />);
 
         await waitFor(() => {
             expect(screen.getByText(errorMessage)).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe('PopulationGraph', () => {
 
     it('不正な人口種別が指定された場合に正しくエラーメッセージが表示する', () => {
         expect(() => {
-            render(<PopulationGraph prefectureData={mockPrefectureData} dataType={4} />);
+            render(<PopulationGraph prefectureData={mockPrefectureData} populationType={4} />);
         }).toThrow('指定した種類のデータ取得には対応していません。');
     });
 });
