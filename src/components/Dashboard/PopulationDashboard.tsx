@@ -35,7 +35,7 @@ export const PopulationDashboard = () => {
                 selectedPrefectures={selectedPrefectures}
                 onChange={handlePrefectureChange}
             />
-            <PopulationGraph prefectureData={selectedPrefectures} dataType={populationType} />
+            <PopulationGraph prefectureData={selectedPrefectures} populationType={populationType} />
         </div>
     );
 };
