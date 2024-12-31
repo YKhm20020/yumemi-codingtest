@@ -8,7 +8,7 @@ on:
     types: [opened, reopened, synchronize, ready_for_review]
 
 env:
-  WORKING_DIRECTORY: __test__
+  WORKING_DIRECTORY: .
 
 jobs:
   test:
