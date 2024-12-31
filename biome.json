@@ -5,13 +5,13 @@
     },
     "formatter": {
         "enabled": true,
-        "include": ["src/**"],
+        "include": ["src/**", "__test__/**"],
         "indentStyle": "space",
         "indentWidth": 4,
         "lineWidth": 100
     },
     "files": {
-        "include": ["src/**"]
+        "include": ["src/**", "__test__/**"]
     },
     "javascript": {
         "parser": {

@@ -38,12 +38,12 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
         tooltip: {
             // ここだけどうしても型定義がうまくいかなかった
             formatter: function (this: any): string {
-                const point = this.point as { x: number; y: number; rate?: number | null };
+                const point = this.point as { x: number; y: number; rate?: number };
                 const baseText = `${this.series.name}<br/>
                     ${point.x}年: ${Highcharts.numberFormat(point.y, 0, '', ',')}人`;
 
                 // 総人口以外の場合は割合も表示
-                if (populationType !== 0 && point.rate != null) {
+                if (populationType !== 0 && point.rate) {
                     return `${baseText}<br/>
                     割合: ${point.rate.toFixed(1)}%`;
                 }
@@ -78,6 +78,21 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
         // グラフのタイトルを更新
         setChartOptions((prevOptions) => ({
             ...prevOptions,
+            // 初期値が総人口の場合は、tooltip を上書きしないと割合が表示されない
+            tooltip: {
+                // ここだけどうしても型定義がうまくいかなかった
+                formatter: function (this: any): string {
+                    const point = this.point as { x: number; y: number; rate?: number };
+                    const baseText = `${this.series.name}<br/>
+                        ${point.x}年: ${Highcharts.numberFormat(point.y, 0, '', ',')}人`;
+                    // 総人口以外の場合は割合も表示
+                    if (populationType !== 0 && point.rate) {
+                        return `${baseText}<br/>
+                        割合: ${point.rate.toFixed(1)}%`;
+                    }
+                    return baseText;
+                },
+            },
             title: {
                 text: `都道府県別${PopulationTypeLabels[populationType]}推移のグラフ`,
             },
@@ -124,6 +139,7 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
                         const data = await fetchPerYearPopulation(
                             newPrefecture.prefCode.toString(),
                         );
+                        console.log(data);
 
                         // 取得した人口データの配列が空の場合はエラーを返す
                         if (data.result.data[populationType].data.length === 0) {

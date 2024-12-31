@@ -2,7 +2,7 @@ import type React from 'react';
 
 // prefectureData 型でまとめてもよいが、チェックボックスコンポーネントの汎用性が下がるため、IDとラベルを別々に定義
 type CommonCheckBoxProps = {
-    id: number; // prefCode, 都道府県ごとに一意
+    id: number; // チェックボックスごとに一意
     label: string; // ラベル
     checked: boolean; // チェック状態 (true: チェック済み, false: 未チェック)
     onChange: (checked: boolean) => void; // チェック状態を更新する関数
