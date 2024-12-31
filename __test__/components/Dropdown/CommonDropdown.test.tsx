@@ -1,17 +1,29 @@
 import { CommonDropdown } from '@/components/Dropdown/CommonDropdown';
-import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { mockPopulationType } from '../../mocks/population/populationType';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { Mock } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 
 describe('CommonDropdown', () => {
-    // 人口種別モックデータの読み込み
-    const options = mockPopulationType;
+    // モックデータ
+    const options = [
+        { value: 0, label: 'ラベル0' },
+        { value: 1, label: 'ラベル1' },
+        { value: 2, label: 'ラベル2' },
+        { value: 3, label: 'ラベル3' },
+        { value: 4, label: 'ラベル4' },
+    ];
+
+    const handleChange = vi.fn();
 
     // テストごとにレンダリング
     beforeEach(() => {
         render(
-            <CommonDropdown dropdownLabel='ドロップダウン' options={options} onChange={() => {}} />,
+            <CommonDropdown
+                dropdownLabel='ドロップダウン'
+                options={options}
+                onChange={handleChange}
+            />,
         );
     });
 
@@ -30,7 +42,13 @@ describe('CommonDropdown', () => {
         }
     });
 
-    it('選択肢は全部で4つである', () => {
-        expect(screen.getAllByRole('option')).toHaveLength(4);
+    it('選択肢は全部で5つである', () => {
+        expect(screen.getAllByRole('option')).toHaveLength(5);
+    });
+
+    it('クリック時に onChange が正しく呼ばれる', () => {
+        const dropdownElement = screen.getByRole('combobox');
+        fireEvent.change(dropdownElement, { target: { value: options[0].value } });
+        expect(handleChange).toHaveBeenCalledWith(options[0].value);
     });
 });
