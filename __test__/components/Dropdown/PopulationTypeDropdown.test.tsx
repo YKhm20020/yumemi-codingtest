@@ -1,6 +1,6 @@
 import { PopulationTypeDropdown } from '@/components/Dropdown/PopulationTypeDropdown';
-import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockPopulationType } from '../../mocks/population/populationType';
 import '@testing-library/jest-dom/vitest';
 
@@ -10,13 +10,15 @@ describe('PopulationTypeDropdown', () => {
 
     // テストごとにレンダリング
     beforeEach(() => {
-        render(<PopulationTypeDropdown onChange={() => {}} />);
+        render(<PopulationTypeDropdown onChange={handleChange} />);
     });
 
     // テストごとにレンダリングをクリア
     afterEach(() => {
         cleanup();
     });
+
+    const handleChange = vi.fn();
 
     it('ドロップダウンが正しく表示される', () => {
         // ドロップダウンラベル の確認
@@ -30,5 +32,11 @@ describe('PopulationTypeDropdown', () => {
 
     it('選択肢は全部で4つである', () => {
         expect(screen.getAllByRole('option')).toHaveLength(4);
+    });
+
+    it('クリック時に onChange が正しく呼ばれる', () => {
+        const dropdownElement = screen.getByRole('combobox');
+        fireEvent.change(dropdownElement, { target: { value: mockOptions[0].value } });
+        expect(handleChange).toHaveBeenCalledWith(mockOptions[0].value);
     });
 });
