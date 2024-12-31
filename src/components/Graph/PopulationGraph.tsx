@@ -6,6 +6,7 @@ import type { PrefectureData } from '@/types/prefecture/prefectureData';
 import { fetchPerYearPopulation } from '@/utils/population/fetchPerYearPopulation';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import { useEffect, useRef, useState } from 'react';
 
 type PopulationGraphProps = {
@@ -14,6 +15,11 @@ type PopulationGraphProps = {
 };
 
 export const PopulationGraph = ({ prefectureData, populationType }: PopulationGraphProps) => {
+    // Accessibility モジュールを初期化
+    if (typeof HighchartsAccessibility === 'function') {
+        HighchartsAccessibility(Highcharts);
+    }
+
     // 人口データを表示するグラフのオプション
     const [chartOptions, setChartOptions] = useState<Highcharts.Options>({
         title: {
@@ -54,6 +60,9 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
         credits: {
             enabled: false,
         },
+        accessibility: {
+            description: '都道府県別の人口データを表示する折れ線グラフ',
+        },
     });
 
     // エラーを表示するための state
@@ -75,7 +84,7 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
         // 前回選択時の人口種別の人口データを表示しないようにするため、キャッシュをクリア
         populationDataCache.current = {};
 
-        // グラフのタイトルを更新
+        // 人口種別変更時の処理
         setChartOptions((prevOptions) => ({
             ...prevOptions,
             // 初期値が総人口の場合は、tooltip を上書きしないと割合が表示されない
@@ -95,6 +104,9 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
             },
             title: {
                 text: `都道府県別${PopulationTypeLabels[populationType]}推移のグラフ`,
+            },
+            accessibility: {
+                description: `都道府県別の${PopulationTypeLabels[populationType]}を表示する折れ線グラフ`,
             },
         }));
     }, [populationType]);
