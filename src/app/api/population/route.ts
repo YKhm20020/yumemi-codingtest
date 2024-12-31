@@ -49,7 +49,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         console.error(`${error}: 人口データ取得エラー`);
         return NextResponse.json(
             {
-                error: `人口データ取得時にエラーが発生しました: ${error}`,
+                error: `${error}: 人口データ取得時にエラーが発生しました`,
             },
             { status: 500 },
         );

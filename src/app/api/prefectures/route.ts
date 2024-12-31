@@ -21,7 +21,6 @@ export async function GET(): Promise<NextResponse> {
                 'x-api-key': apiKey,
             },
         });
-        console.log('APIルートから呼ばれてるよ');
 
         if (!response.ok) {
             return NextResponse.json(
