@@ -3,7 +3,6 @@ import type { PopulationDataPerYearResponse } from '@/types/population/populatio
 export async function fetchPerYearPopulation(
     prefCode: string,
 ): Promise<PopulationDataPerYearResponse> {
-
     try {
         const response = await fetch(`/api/population?prefCode=${prefCode}`);
         if (!response.ok) {
