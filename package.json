@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
     "check": "biome check --write --diagnostic-level=error *",
     "check:ci": "biome ci --verbose --diagnostic-level=error *"
   },
