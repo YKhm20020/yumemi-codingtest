@@ -17,29 +17,23 @@ export const PrefectureCheckBoxList = ({
     onChange,
     selectedPrefectures,
 }: PrefectureCheckBoxListProps) => {
-    // TODO: 変数名が都道府県関連に依存しているので、汎用的なコンポーネントにするため、チェックボックスリストとグラフをまとめたコンポーネント実装時に変数名を変更。
-    // チェックボックスリスト作成時点では詳細な設計が思いつかなかったため、都道府県に関連した変数名をそのまま使用している。
-
+    // 都道府県名データを監視
     const [prefectures, setPrefectures] = useState<PrefectureData[]>([]);
 
     // prefCode と 都道府県名のデータを取得
-    // TODO: CheckBoxList と PopulationGraph をまとめたコンポーネントで改めて実装
-    // TODO: データ取得に失敗した場合のエラーハンドリング
-    // TODO: 全都道府県の4種類の全人口データを一度に取得するか、都道府県および人口種別ごとに取得するかを決める
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await fetchPrefectures();
                 setPrefectures(data.result);
             } catch (error) {
-                console.error(error);
+                console.error(`${error}: 都道府県データの取得時にエラーが発生しました。`);
             }
         };
         fetchData();
     }, []);
 
     // チェックボックスの選択状態を更新する関数
-    // TODO: グラフにデータを渡すため、CheckBoxList と PopulationGraph をまとめたコンポーネントで改めて実装
     const handleChange = (prefecture: PrefectureData, checked: boolean) => {
         // 選択された都道府県データを更新
         // 順序は今回必要ではないため、Set オブジェクトで選択した都道府県データを管理
