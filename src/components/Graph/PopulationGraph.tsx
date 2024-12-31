@@ -38,7 +38,7 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
         tooltip: {
             // ここだけどうしても型定義がうまくいかなかった
             formatter: function (this: any): string {
-                const point = this.point as { x: number; y: number; rate?: number};
+                const point = this.point as { x: number; y: number; rate?: number };
                 const baseText = `${this.series.name}<br/>
                     ${point.x}年: ${Highcharts.numberFormat(point.y, 0, '', ',')}人`;
 
@@ -82,7 +82,7 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
             tooltip: {
                 // ここだけどうしても型定義がうまくいかなかった
                 formatter: function (this: any): string {
-                    const point = this.point as { x: number; y: number; rate?: number};
+                    const point = this.point as { x: number; y: number; rate?: number };
                     const baseText = `${this.series.name}<br/>
                         ${point.x}年: ${Highcharts.numberFormat(point.y, 0, '', ',')}人`;
                     // 総人口以外の場合は割合も表示
