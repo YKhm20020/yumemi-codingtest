@@ -139,7 +139,6 @@ export const PopulationGraph = ({ prefectureData, populationType }: PopulationGr
                         const data = await fetchPerYearPopulation(
                             newPrefecture.prefCode.toString(),
                         );
-                        console.log(data);
 
                         // 取得した人口データの配列が空の場合はエラーを返す
                         if (data.result.data[populationType].data.length === 0) {
